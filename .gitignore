@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Env
+.env
+.venv/
+venv/
+
+# Local Claude Code tooling (skills, settings)
+.claude/
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Rust
+rust/target/
+
+# Node / UI
+ui/node_modules/
+ui/dist/
+
+# Project
+# regenerable: HF stream cache + Parquet output
+data/
+
+# Paid artifacts — committed so `make eval`/`make bench`/`make charts` reproduce
+# every README number offline with zero Cohere quota (public web-text embeddings
+# + our own Command A label scores; nothing secret). Runtime WAL/shm files stay
+# ignored via the broad rule below.
+.cache/*
+!.cache/label_cache.json
+!.cache/embeddings/
+.cache/embeddings/*
+!.cache/embeddings/cache.db
+
+# eval outputs: commit the small JSON reports + the pre-embedded bench input so
+# `make charts`/`make bench` run on a fresh clone; ignore everything else.
+eval/results/*
+!eval/results/.gitkeep
+!eval/results/eval_report.json
+!eval/results/plot_data.json
+!eval/results/bench_input.parquet
+
+# docs: internal working docs (PRD/TDD) — kept local
+# Public artifacts (demo.gif, architecture.md) live in assets/.
+docs/
+
+# session-transfer note 
+handoff.md
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

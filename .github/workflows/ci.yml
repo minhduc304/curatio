@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint-test:
+    name: Lint + tests (Python)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install
+        run: pip install -e ".[dev]"
+      - name: Ruff
+        run: ruff check src eval tests
+      - name: Pytest
+        run: pytest -q -k "not live_embed"
+
+  parity:
+    name: Parity gate + throughput (Python vs Rust)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install Python deps
+        run: pip install -e ".[dev]"
+      - name: Build Rust worker
+        run: cargo build --release --manifest-path rust/Cargo.toml
+      - name: Rust tests (incl. MinHash cross-language parity)
+        run: cargo test --release --manifest-path rust/Cargo.toml
+      # Cache-only and deterministic: reuses the committed embedding/label caches,
+      # diffs every Rust decision against the Python reference (SC6 parity gate),
+      # and fails the build if SC4/SC6/SC7 regress. Zero Cohere quota.
+      - name: Benchmark + parity gate (SC4/SC6/SC7)
+        run: python -m eval.bench

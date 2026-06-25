@@ -1,0 +1,30 @@
+[package]
+name = "Curatio-worker"
+version = "0.1.0"
+edition = "2021"
+description = "Rust/Axum hot-path curation worker (C15). See TDD §4.8."
+
+[[bin]]
+name = "Curatio-worker"
+path = "src/main.rs"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+hnsw_rs = "0.3"            # OQ4 resolved: online incremental insert (instant-distance builds once)
+arrow = "53"
+parquet = "53"
+whatlang = "0.16"
+crc32fast = "1"           # matches Python zlib.crc32 (CRC-32/ISO-HDLC) for MinHash parity
+anyhow = "1"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+dotenvy = "0.15"
+
+# Live-worker deps (Kafka consume + Axum metrics + REST embed) land in the
+# dashboard phase; rdkafka needs a system `cmake`. Kept out of the bench build:
+#   rdkafka = { version = "0.36", features = ["cmake-build"] }
+#   axum = "0.7"
+#   reqwest = { version = "0.12", features = ["json"] }
+#   sled = "0.34"

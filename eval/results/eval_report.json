@@ -1,0 +1,82 @@
+{
+  "config": {
+    "embed_dim": 1024,
+    "embed_batch_size": 96,
+    "quality_threshold": 0.5,
+    "dedup_cosine_threshold": 0.9,
+    "minhash_num_perm": 128,
+    "minhash_shingle_size": 5,
+    "lsh_band_rows": 1,
+    "dedup_surface_threshold": 0.5,
+    "hnsw_m": 16,
+    "hnsw_ef_construction": 200,
+    "hnsw_ef_search": 64,
+    "min_chars": 200,
+    "max_chars": 100000,
+    "max_symbol_ratio": 0.1,
+    "target_language": "en",
+    "replay_rate_per_sec": 0
+  },
+  "dedup_precision": 1.0,
+  "dedup_recall": 0.92,
+  "classifier_auc": 0.871774193548387,
+  "funnel": {
+    "ingested": 200,
+    "kept": 86,
+    "rejected_by_stage": {
+      "heuristic": 13,
+      "quality": 101
+    },
+    "rejected_by_reason": {
+      "boilerplate": 13,
+      "low_quality": 101
+    },
+    "retention_rate": 0.43,
+    "docs_per_sec": 230.32023696369401,
+    "embed_calls": 187,
+    "chat_calls": 0,
+    "est_cost_usd": 0.01828734,
+    "p50_stage_latency_ms": {
+      "heuristic": 0.44914596946910024,
+      "quality": 0.0019579892978072166,
+      "dedup": 0.1642705174162984
+    }
+  },
+  "benchmarks": [
+    {
+      "runtime": "python",
+      "workers": 1,
+      "docs": 470,
+      "docs_per_sec": 1167.8006319699311,
+      "p50_latency_us": 454.1871603578329,
+      "decisions_match_reference": true
+    },
+    {
+      "runtime": "rust",
+      "workers": 1,
+      "docs": 470,
+      "docs_per_sec": 2213.8535418123925,
+      "p50_latency_us": 243.792,
+      "decisions_match_reference": true
+    },
+    {
+      "runtime": "rust",
+      "workers": 2,
+      "docs": 470,
+      "docs_per_sec": 4893.533117896406,
+      "p50_latency_us": 245.66600000000003,
+      "decisions_match_reference": true
+    },
+    {
+      "runtime": "rust",
+      "workers": 4,
+      "docs": 470,
+      "docs_per_sec": 9928.974454396517,
+      "p50_latency_us": 245.20800000000003,
+      "decisions_match_reference": true
+    }
+  ],
+  "n_injected_dups": 400,
+  "duration_sec": 27.38509300001897,
+  "timestamp": "2026-06-09T20:54:12.304315"
+}
