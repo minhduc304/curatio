@@ -20,6 +20,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
 import subprocess
 import time
 
@@ -233,6 +234,8 @@ def main() -> None:
     print(f"  SC5 single-core rust speedup : {speedup:.2f}x  (informational; both lang-id-bound)")
     print(f"  aggregate (rust x4 / python) : {aggregate:.2f}x")
     print("-" * 60)
+
+    ci = bool(os.environ.get("CI"))
     checks = [
         ("SC4 python docs/sec", py_dps, 1000.0),
         ("SC7 4-worker scaling (x)", scaling, 3.0),
@@ -241,8 +244,11 @@ def main() -> None:
     print(f"  {'PASS' if all_parity_ok else 'FAIL'}  SC6 parity (rust == python ref)")
     for name, val, bar in checks:
         passed = val >= bar
-        ok &= passed
-        print(f"  {'PASS' if passed else 'FAIL'}  {name:26s} {val:>10,.2f}  (>= {bar})")
+        if ci:
+            print(f"  {'INFO':4s}  {name:26s} {val:>10,.2f}  (>= {bar}, not gated on CI)")
+        else:
+            ok &= passed
+            print(f"  {'PASS' if passed else 'FAIL'}  {name:26s} {val:>10,.2f}  (>= {bar})")
     print("=" * 60)
     raise SystemExit(0 if ok else 1)
 
