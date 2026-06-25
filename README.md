@@ -1,5 +1,7 @@
 # Curatio
 
+[![CI](https://github.com/minhduc304/curatio/actions/workflows/ci.yml/badge.svg)](https://github.com/minhduc304/curatio/actions/workflows/ci.yml)
+
 **Real-time training-data curation pipeline** on Cohere **Embed v4** + **Command A**.
 Curatio replays a web-text stream through heuristic → quality → online-dedup stages and
 emits a clean dataset — with a **Python reference implementation** for correctness and a
