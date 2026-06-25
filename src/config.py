@@ -8,7 +8,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    cohere_api_key: SecretStr
+    cohere_api_key: SecretStr = SecretStr("")  # empty default: cache-only paths (eval/bench) import without a key
     embed_model: str = "embed-v4.0"
     chat_model: str = "command-a-03-2025"
     kafka_bootstrap: str = "localhost:9092"
@@ -24,4 +24,4 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
 
-settings = Settings()  # type: ignore[call-arg]
+settings = Settings()
